@@ -1,0 +1,103 @@
+<div>
+    <canvas id="myChart"></canvas>
+</div>
+  
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  
+  <body>
+    <!-- <label>Input JSON<input type="text" id = "json" size="40" value="{'Impatient': 3,'Disappointmented': 3,'Angry': 5,'Sad': 2}"></label> -->
+    <label>Input JSON<input type="text" id = "json" size="40" value='{"Impatient": 3,"Disappointmented": 3,"Angry": 5,"Sad": 2}'></label>
+    <!-- <label>Input JSON<input type="text" id = "json" size="40" value='hoge'></label> -->
+    <!-- <label>Input JSON<input type="text" id = "json" size="40" value=""></label> -->
+	<!-- <button onclick="processInput()">Submit</button> -->
+    
+	<p id="output"></p>
+    <!-- <canvas id="myChart"></canvas> -->
+    <button onclick="saveImage()">Save Image</button>
+  
+</body>
+
+
+
+
+<script>
+    function chengeChart() {
+
+        console.log("Change action");
+        let txt = document.getElementById('json').value;
+        let emotions = JSON.parse(txt);
+        // console.log(txt);
+        // console.log(emotions.Angry);
+        const data = {
+            labels: [
+                '焦り',//'Impatient',
+                '失望', // 'Disappointmented',
+                '怒り', // 'Angry',
+                '悲しみ'// 'Sad'
+            ],
+            datasets: [{
+            // clip: {top: 10, bottom: 0}, 
+            label: '感情内約',
+            data: [emotions.Impatient, emotions.Disappointmented,
+                   emotions.Angry, emotions.Sad],
+            fill: true,
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            borderColor: 'rgb(255, 99, 132)',
+            pointBackgroundColor: 'rgb(255, 99, 132)',
+            pointBorderColor: '#fff',
+            pointHoverBackgroundColor: '#fff',
+            pointHoverBorderColor: 'rgb(255, 99, 132)'
+
+            // backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            // borderColor: 'rgb(54, 162, 235)',
+            // pointBackgroundColor: 'rgb(54, 162, 235)',
+            // pointBorderColor: '#fff',
+            // pointHoverBackgroundColor: '#fff',
+            // pointHoverBorderColor: 'rgb(54, 162, 235)'
+            }]
+        };
+        const ctx = document.getElementById('myChart');
+        
+        // const myChart = new Chart(ctx, {
+        myChart = new Chart(ctx, {
+            type: 'radar',
+            data : data,
+            options: {
+                elements: {
+                    line: {
+                        borderWidth: 3
+                    }
+                },
+                scales: {
+                    r: {
+                        suggestedMin: 0,
+                        suggestedMax: 10
+                    }
+                }
+            },
+        });
+        // myChart.destroy();
+
+    }
+
+    function saveImage() {
+    //   alert("You clicked the button!");
+        var image = myChart.toBase64Image();
+    
+        // Create a virtual anchor tag to download the image
+        var downloadLink = document.createElement('a');
+        downloadLink.href = image;
+        downloadLink.download = 'chart.png';
+        downloadLink.click();
+    }
+
+    chengeChart();
+    json.onchange = function() {
+        if (myChart) {
+            myChart.destroy();
+        }
+        chengeChart();
+    };
+
+  </script>

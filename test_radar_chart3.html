@@ -1,0 +1,111 @@
+<div>
+    <canvas id="myChart"></canvas>
+</div>
+  
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  
+  <body>
+    <!-- <label>Input JSON<input type="text" id = "json" size="40" value="{'Impatient': 3,'Disappointmented': 3,'Angry': 5,'Sad': 2}"></label> -->
+    <label>Input JSON<input type="text" id = "json" size="40" value='10-10-10'></label>
+    <!-- <label>Input JSON<input type="text" id = "json" size="40" value='hoge'></label> -->
+    <!-- <label>Input JSON<input type="text" id = "json" size="40" value=""></label> -->
+	<!-- <button onclick="processInput()">Submit</button> -->
+    
+	<p id="output"></p>
+    <!-- <canvas id="myChart"></canvas> -->
+    <button onclick="saveImage()">Save Image</button>
+    <button onclick="chengeChartColorB()">Blue</button>
+    <button onclick="chengeChartColorR()">Red</button>
+
+</body>
+
+
+
+
+<script>
+    function chengeChart(rgb = [255,99,132]) {
+
+        console.log("Change action");
+        console.log(rgb);
+        let txt = document.getElementById('json').value;
+        let emotions = txt.split("-");
+        console.log(emotions)
+        // console.log(txt);
+        // console.log(emotions.Angry);
+        const data = {
+            labels: [
+                '喜び',//'Joyful',
+                '楽しさ', // 'Fun',
+                '感謝', // 'Angry',
+            ],
+            datasets: [{
+            // clip: {top: 10, bottom: 0}, 
+            label: '感情内約',
+            data: [emotions[0], emotions[1], emotions[2]],
+            fill: true,
+            backgroundColor: `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, 0.2)`,
+            borderColor: `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`,
+            pointBackgroundColor: `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`,
+            pointBorderColor: '#fff',
+            pointHoverBackgroundColor: '#fff',
+            pointHoverBorderColor: `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`
+            }]
+        };
+        const ctx = document.getElementById('myChart');
+        
+        // const myChart = new Chart(ctx, {
+        myChart = new Chart(ctx, {
+            type: 'radar',
+            data : data,
+            options: {
+                elements: {
+                    line: {
+                        borderWidth: 3
+                    }
+                },
+                scales: {
+                    r: {
+                        suggestedMin: 0,
+                        suggestedMax: 10
+                    }
+                }
+            },
+        });
+        // myChart.destroy();
+
+    }
+
+    function saveImage() {
+    //   alert("You clicked the button!");
+        var image = myChart.toBase64Image();
+    
+        // Create a virtual anchor tag to download the image
+        var downloadLink = document.createElement('a');
+        downloadLink.href = image;
+        downloadLink.download = 'chart.png';
+        downloadLink.click();
+    }
+
+    chengeChart();
+    json.onchange = function() {
+        if (myChart) {
+            myChart.destroy();
+        }
+        chengeChart();
+    };
+
+    function chengeChartColorB() {
+        if (myChart) {
+            myChart.destroy();
+        }
+        chengeChart(rgb = [54, 162, 235]);
+    }
+    function chengeChartColorR() {
+        if (myChart) {
+            myChart.destroy();
+        }
+        chengeChart();
+    }
+
+  </script>
